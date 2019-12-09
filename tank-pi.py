@@ -53,23 +53,26 @@ EVENT_SIZE = struct.calcsize(FORMAT)
 event = in_file.read(EVENT_SIZE)
 
 while event:
-    (tv_sec, tv_usec, ev_type, code, value) = struct.unpack(FORMAT, event)
-    if ev_type == 3 and code == 3:
-        right_stick_x = value
-    if ev_type == 3 and code == 4:
-        right_stick_y = value
+    try:
+        (tv_sec, tv_usec, ev_type, code, value) = struct.unpack(FORMAT, event)
+        if ev_type == 3 and code == 3:
+            right_stick_x = value
+        if ev_type == 3 and code == 4:
+            right_stick_y = value
 
-    # Scale stick positions to -100,100
-    forward = scale(right_stick_y, (0,255), (100,-100))
-    left = scale(right_stick_x, (0,255), (100,-100))
+        # Scale stick positions to -100,100
+        forward = scale(right_stick_y, (0,255), (100,-100))
+        left = scale(right_stick_x, (0,255), (100,-100))
 
-    # Set motor voltages. If we're steering left, the left motor
-    # must run backwards so it has a -left component
-    # It has a forward component for going forward too. 
-    left_motor.run_direct(duty_cycle_sp=clamp(forward - left))
-    right_motor.run_direct(duty_cycle_sp=clamp(forward + left))
+        # Set motor voltages. If we're steering left, the left motor
+        # must run backwards so it has a -left component
+        # It has a forward component for going forward too. 
+        left_motor.run_direct(duty_cycle_sp=clamp(forward - left))
+        right_motor.run_direct(duty_cycle_sp=clamp(forward + left))
 
-    # Finally, read another event
-    event = in_file.read(EVENT_SIZE)
-
-in_file.close()
+        # Finally, read another event
+        event = in_file.read(EVENT_SIZE)
+    except:
+        in_file.close()
+        left_motor.stop()
+        right_motor.stop()
