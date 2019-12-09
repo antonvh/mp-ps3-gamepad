@@ -80,4 +80,5 @@ while event:
         in_file.close()
         left_motor.stop()
         right_motor.stop()
+        steer_motor.stop()
         break
