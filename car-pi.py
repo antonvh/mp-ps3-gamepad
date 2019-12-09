@@ -71,7 +71,7 @@ while event:
         left_motor.run_direct(duty_cycle_sp=clamp(forward - left*0.3))
         right_motor.run_direct(duty_cycle_sp=clamp(forward + left*0.3))
         
-        steer_err = steer_motor.position - left
+        steer_err = steer_motor.position - left * 0.5
         steer_motor.run_direct(duty_cycle_sp=clamp(steer_err * -2))
 
         # Finally, read another event
