@@ -72,7 +72,7 @@ while event:
         right_motor.run_direct(duty_cycle_sp=clamp(forward + left*0.3))
         
         steer_err = steer_motor.position - left
-        steer_motor.run_direct(duty_cycle_sp=clamp(steer_err * 2))
+        steer_motor.run_direct(duty_cycle_sp=clamp(steer_err * -2))
 
         # Finally, read another event
         event = in_file.read(EVENT_SIZE)
