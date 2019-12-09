@@ -26,6 +26,16 @@ def scale(val, src, dst):
     """
     return (float(val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
 
+def clamp(n, limits=(-100,100)):
+    """
+    Given a number and a range, return the number, or the extreme it 
+    is closest to.
+
+    :param n: number
+    :return: number
+    """
+    (minn, maxn) = limits
+    return max(min(maxn, n), minn)
 
 # Find the PS3 Gamepad:
 # /dev/input/event3 is the usual file handler for the gamepad.
@@ -56,8 +66,8 @@ while event:
     # Set motor voltages. If we're steering left, the left motor
     # must run backwards so it has a -left component
     # It has a forward component for going forward too. 
-    left_motor.run_direct(duty_cycle_sp=(forward - left))
-    right_motor.run_direct(duty_cycle_sp=(forward + left))
+    left_motor.run_direct(duty_cycle_sp=clamp(forward - left))
+    right_motor.run_direct(duty_cycle_sp=clamp(forward + left))
 
     # Finally, read another event
     event = in_file.read(EVENT_SIZE)
