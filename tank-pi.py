@@ -30,8 +30,8 @@ def scale(val, src, dst):
 # Find the PS3 Gamepad:
 # /dev/input/event3 is the usual file handler for the gamepad.
 # look at contents of /proc/bus/input/devices if it doesn't work.
-# infile_path = "/dev/input/event3"
-infile_path = "/devices/platform/soc/3f980000.usb/usb1/1-1/1-1.5/1-1.5:1.0/bluetooth/hci0/hci0:39/0005:054C:0268.0003/input/input3"
+# Find the line where it says 'Handlers'
+infile_path = "/dev/input/event2"
 
 # open file in binary mode
 in_file = open(infile_path, "rb")
